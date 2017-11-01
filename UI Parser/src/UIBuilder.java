@@ -23,6 +23,7 @@ public class UIBuilder extends Application {
 				   btnModifyElement,
 				   btnRender, btnClearAll;
 		
+	private Text txtWidth, txtHeight, txtText;
 	private TextField tfText, tfWidth, tfHeight;
 	
 	private ArrayList<Node> uiElements;
@@ -49,6 +50,9 @@ public class UIBuilder extends Application {
 		VBox vBox = new VBox();
 		vBox.setPrefWidth(125);
 		
+		VBox tfVBox = new VBox();
+		tfVBox.setPrefWidth(70);
+		
 		/* UI Builder Components */
 		bthTextfield = new Button("Text Field");
 		bthTextfield.setTranslateX(20);
@@ -70,17 +74,32 @@ public class UIBuilder extends Application {
 		txtAttributes.setTranslateX(20);
 		txtAttributes.setTranslateY(225);
 		
-		tfText = new TextField("Text");
-		tfText.setTranslateX(20);
-		tfText.setTranslateY(245);
+		txtWidth = new Text ("Width: ");
+		txtWidth.setFont(Font.font(14));
+		txtWidth.setTranslateX(25);
+		txtWidth.setTranslateY(300);	
 		
-		tfWidth = new TextField("Width");
-		tfWidth.setTranslateX(20);
-		tfWidth.setTranslateY(285);
+		txtHeight = new Text ("Height: ");
+		txtHeight.setFont(Font.font(14));
+		txtHeight.setTranslateX(25);
+		txtHeight.setTranslateY(340);	
 		
-		tfHeight = new TextField("Height");
-		tfHeight.setTranslateX(20);
-		tfHeight.setTranslateY(325);
+		txtText = new Text ("Text: ");
+		txtText.setFont(Font.font(14));
+		txtText.setTranslateX(25);
+		txtText.setTranslateY(260);	
+		
+		tfText = new TextField();
+		tfText.setTranslateX(80);
+		tfText.setTranslateY(240);
+		
+		tfWidth = new TextField();
+		tfWidth.setTranslateX(80);
+		tfWidth.setTranslateY(280);
+		
+		tfHeight = new TextField();
+		tfHeight.setTranslateX(80);
+		tfHeight.setTranslateY(320);
 		
 		btnModifyElement = new Button("Modify Element");
 		btnModifyElement.setTranslateX(20);
@@ -100,24 +119,24 @@ public class UIBuilder extends Application {
 		btnLabel.setMinWidth(vBox.getPrefWidth());
 		bthTextfield.setMinWidth(vBox.getPrefWidth());
 		btnButton.setMinWidth(vBox.getPrefWidth());
-		tfText.setMinWidth(vBox.getPrefWidth());
-		tfWidth.setMinWidth(vBox.getPrefWidth());
-		tfHeight.setMinWidth(vBox.getPrefWidth());
+		tfText.setPrefWidth(tfVBox.getPrefWidth());
+		tfWidth.setPrefWidth(tfVBox.getPrefWidth());
+		tfHeight.setPrefWidth(tfVBox.getPrefWidth());
 		btnClearAll.setMinWidth(vBox.getPrefWidth());
 		btnModifyElement.setMinWidth(vBox.getPrefWidth());
 		btnRender.setMinWidth(vBox.getPrefWidth());
 		
-		vBox.getChildren().addAll(btnLabel, bthTextfield, btnButton,
-				tfText,tfWidth, tfHeight, btnModifyElement,
-				btnClearAll, btnRender);
+		vBox.getChildren().addAll(btnLabel, bthTextfield, btnButton, btnModifyElement, btnClearAll, btnRender);
+		
+		tfVBox.getChildren().addAll(tfText, tfWidth, tfHeight);
 		
 		root.getChildren().addAll(txtComponents, btnLabel, bthTextfield, btnButton, 
 				txtAttributes, tfText,tfWidth, tfHeight, btnModifyElement,
-				btnRender, btnClearAll);
+				btnRender, btnClearAll, txtText, txtWidth, txtHeight);
 
 		stage.setResizable(false);
 		
-		stage.setScene(new Scene(root, 1200, 800, Color.GHOSTWHITE));
+		stage.setScene(new Scene(root, 1366, 768, Color.GHOSTWHITE));
 		stage.setTitle("UI Builder");
 		stage.show();
 	}
