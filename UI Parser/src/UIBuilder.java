@@ -32,6 +32,7 @@ public class UIBuilder extends Application {
 	private Group root;
 	
 	private UIEventHandlers uiController;
+	private Stage stage;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -40,6 +41,7 @@ public class UIBuilder extends Application {
 	@Override
 	public void start(Stage stage) {
 		/* init */
+		this.stage = stage;
 		uiElements = new ArrayList<Node>();
 		root = new Group();
 		uiController = new UIEventHandlers(this);
@@ -111,6 +113,7 @@ public class UIBuilder extends Application {
 		btnRender = new Button("Render UI");
 		btnRender.setTranslateX(20);
 		btnRender.setTranslateY(440);
+		btnRender.setOnAction(uiController.renderUIAction);
 	
 		btnClearAll = new Button("Clear UI");
 		btnClearAll.setTranslateX(20);
@@ -127,12 +130,12 @@ public class UIBuilder extends Application {
 		btnSaveJSON = new Button("Save JSON");
 		btnSaveJSON.setTranslateX(20);
 		btnSaveJSON.setTranslateY(760);
-//		btnSaveJSON.setOnAction();
+		btnSaveJSON.setOnAction(uiController.saveJSONAction);
 		
 		btnLoadJSON = new Button("Load JSON");
 		btnLoadJSON.setTranslateX(20);
 		btnLoadJSON.setTranslateY(800);
-//		btnLoadJSON.setOnAction();
+		btnLoadJSON.setOnAction(uiController.loadJSONAction);
 		
 		/*Set buttons to same width*/
 		btnLabel.setMinWidth(vBox.getPrefWidth());
@@ -175,6 +178,13 @@ public class UIBuilder extends Application {
 		return tfText;
 	}
 
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
 
 	public TextField getTfWidth() {
 		return tfWidth;
@@ -184,5 +194,8 @@ public class UIBuilder extends Application {
 		return tfHeight;
 	}
 
+	public void updatetaJSON(String json){
+		taJSON.setText(json);
+	}
 	
 }

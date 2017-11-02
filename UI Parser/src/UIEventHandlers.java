@@ -1,14 +1,21 @@
+import java.io.File;
 import java.util.ArrayList;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 
 
 
@@ -24,11 +31,16 @@ public class UIEventHandlers {
 	private ArrayList<Node> uiElements;
 	private Group root;
 	private String selectedElementType;
+	
+	
+	private UIRenderer uiRenderer;
 
 	public UIEventHandlers(UIBuilder uiBuilder){
 		this.uiBuilder = uiBuilder;
 		this.uiElements = uiBuilder.getUIElements();
 		this.root = uiBuilder.getRoot();
+		
+		uiRenderer = new UIRenderer();
 	}
 	
 	EventHandler<ActionEvent> newTextFieldAction = new EventHandler<ActionEvent>(){
@@ -113,6 +125,64 @@ public class UIEventHandlers {
 				root.getChildren().remove(uiElements.get(i));
 			
 			uiElements.clear();
+			uiBuilder.updatetaJSON("");
+		}
+	};
+	
+	EventHandler<ActionEvent> renderUIAction = new EventHandler<ActionEvent>(){
+		@Override
+		public void handle(ActionEvent event) {
+			String json = uiRenderer.renderUI(uiElements);
+			uiBuilder.updatetaJSON(json);
+		}
+	};
+	
+	EventHandler<ActionEvent> saveJSONAction = new EventHandler<ActionEvent>(){
+		@Override
+		public void handle(ActionEvent event) {
+			
+			 FileChooser fileChooser = new FileChooser();
+			  
+             //Set extension filter
+             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+             fileChooser.getExtensionFilters().add(extFilter);
+             
+             //Show save file dialog
+             File file = fileChooser.showSaveDialog(uiBuilder.getStage());
+             
+             if(file != null){
+            	 uiRenderer.writeToJSON(file);
+             }
+		
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("");
+			alert.setHeaderText("Successfully saved in a JSON file!!");
+			alert.show();
+
+		}
+	};
+	
+	EventHandler<ActionEvent> loadJSONAction = new EventHandler<ActionEvent>(){
+		@Override
+		public void handle(ActionEvent event) {
+			
+			FileChooser fileChooser = new FileChooser();
+			//Set extension filter
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+            fileChooser.getExtensionFilters().add(extFilter);
+            
+            File selectedFile = fileChooser.showOpenDialog(null);
+
+            if(selectedFile != null){
+            	uiRenderer.readFromJSON(selectedFile);
+    			String json = uiRenderer.getJson();
+    			uiBuilder.updatetaJSON(json);
+    			
+    			loadUILabels(uiRenderer.getLabelList());
+    			loadUIButtons(uiRenderer.getButtonList());
+    			loadUITextFields(uiRenderer.getTextfieldList());
+            }
+			
 		}
 	};
 
@@ -165,8 +235,88 @@ public class UIEventHandlers {
 
 			((Node) (t.getSource())).setTranslateX(newTranslateX);
 			((Node) (t.getSource())).setTranslateY(newTranslateY);
+			
 		}
 	};
 	
+	public void loadUILabels(JSONArray labelJSONList){
+
+		
+		if(labelJSONList.size() > 0){
+			for(int i = 0; i < labelJSONList.size(); i++){
+				JSONObject object = (JSONObject) labelJSONList.get(i);
+				String text = (String) object.get("text");
+				double xpos = (Double) object.get("x-pos");
+				double ypos = (Double) object.get("y-pos");
+				double width = (Double) object.get("width");
+				double height = (Double) object.get("height");
+				
+				Label label = new Label(text);
+				label.setPrefWidth(width);
+				label.setPrefHeight(height);
+				label.setTranslateX(xpos);
+				label.setTranslateY(ypos);
+				label.setCursor(Cursor.HAND);
+				label.setOnMousePressed(OnElementPressed);
+				label.setOnMouseDragged(OnElementDragged);
+				
+				uiElements.add(label);
+				root.getChildren().add(label);
+			}
+		}
+		
+	}
 	
+	public void loadUIButtons(JSONArray buttonJSONList){
+	
+		if(buttonJSONList.size() > 0){
+			for(int i = 0; i < buttonJSONList.size(); i++){
+				JSONObject object = (JSONObject) buttonJSONList.get(i);
+				String text = (String) object.get("text");
+				double xpos = (Double) object.get("x-pos");
+				double ypos = (Double) object.get("y-pos");
+				double width = (Double) object.get("width");
+				double height = (Double) object.get("height");
+				
+				Button button = new Button(text);
+				button.setPrefWidth(width);
+				button.setPrefHeight(height);
+				button.setTranslateX(xpos);
+				button.setTranslateY(ypos);
+				button.setCursor(Cursor.HAND);
+				button.setOnMousePressed(OnElementPressed);
+				button.setOnMouseDragged(OnElementDragged);
+				
+				uiElements.add(button);
+				root.getChildren().add(button);
+			}
+		}
+
+	}
+	
+	public void loadUITextFields(JSONArray textfieldJSONList){
+		
+		if(textfieldJSONList.size() > 0){
+			for(int i = 0; i < textfieldJSONList.size(); i++){
+				JSONObject object = (JSONObject) textfieldJSONList.get(i);
+				String text = (String) object.get("text");
+				double xpos = (Double) object.get("x-pos");
+				double ypos = (Double) object.get("y-pos");
+				double width = (Double) object.get("width");
+				double height = (Double) object.get("height");
+				
+				TextField textfield = new TextField(text);
+				textfield.setPrefWidth(width);
+				textfield.setPrefHeight(height);
+				textfield.setTranslateX(xpos);
+				textfield.setTranslateY(ypos);
+				textfield.setCursor(Cursor.HAND);
+				textfield.setOnMousePressed(OnElementPressed);
+				textfield.setOnMouseDragged(OnElementDragged);
+				
+				uiElements.add(textfield);
+				root.getChildren().add(textfield);
+			}
+		}
+	}
 }
