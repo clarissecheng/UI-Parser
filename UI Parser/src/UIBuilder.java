@@ -9,6 +9,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -21,10 +22,11 @@ public class UIBuilder extends Application {
 
 	private Button btnLabel, bthTextfield, btnButton,
 				   btnModifyElement,
-				   btnRender, btnClearAll;
+				   btnRender, btnClearAll, btnSaveJSON, btnLoadJSON;
 		
 	private Text txtWidth, txtHeight, txtText;
 	private TextField tfText, tfWidth, tfHeight;
+	private TextArea taJSON;
 	
 	private ArrayList<Node> uiElements;
 	private Group root;
@@ -44,14 +46,14 @@ public class UIBuilder extends Application {
 		
 		Text txtComponents = new Text ("- Components -");
 		txtComponents.setFont(Font.font(18));
-		txtComponents.setTranslateX(20);
+		txtComponents.setTranslateX(55);
 		txtComponents.setTranslateY(40);
 		
 		VBox vBox = new VBox();
-		vBox.setPrefWidth(125);
+		vBox.setPrefWidth(200);
 		
 		VBox tfVBox = new VBox();
-		tfVBox.setPrefWidth(70);
+		tfVBox.setPrefWidth(120);
 		
 		/* UI Builder Components */
 		bthTextfield = new Button("Text Field");
@@ -71,7 +73,7 @@ public class UIBuilder extends Application {
 
 		Text txtAttributes = new Text ("- Attributes -");
 		txtAttributes.setFont(Font.font(18));
-		txtAttributes.setTranslateX(20);
+		txtAttributes.setTranslateX(65);
 		txtAttributes.setTranslateY(225);
 		
 		txtWidth = new Text ("Width: ");
@@ -90,15 +92,15 @@ public class UIBuilder extends Application {
 		txtText.setTranslateY(260);	
 		
 		tfText = new TextField();
-		tfText.setTranslateX(80);
+		tfText.setTranslateX(100);
 		tfText.setTranslateY(240);
 		
 		tfWidth = new TextField();
-		tfWidth.setTranslateX(80);
+		tfWidth.setTranslateX(100);
 		tfWidth.setTranslateY(280);
 		
 		tfHeight = new TextField();
-		tfHeight.setTranslateX(80);
+		tfHeight.setTranslateX(100);
 		tfHeight.setTranslateY(320);
 		
 		btnModifyElement = new Button("Modify Element");
@@ -115,6 +117,23 @@ public class UIBuilder extends Application {
 		btnClearAll.setTranslateY(480);
 		btnClearAll.setOnAction(uiController.clearAllAction);
 		
+		taJSON = new TextArea();
+		taJSON.setTranslateX(20);
+		taJSON.setTranslateY(550);
+		taJSON.setPrefWidth(200);
+		taJSON.setPrefHeight(200);
+		taJSON.setWrapText(true);
+		
+		btnSaveJSON = new Button("Save JSON");
+		btnSaveJSON.setTranslateX(20);
+		btnSaveJSON.setTranslateY(760);
+//		btnSaveJSON.setOnAction();
+		
+		btnLoadJSON = new Button("Load JSON");
+		btnLoadJSON.setTranslateX(20);
+		btnLoadJSON.setTranslateY(800);
+//		btnLoadJSON.setOnAction();
+		
 		/*Set buttons to same width*/
 		btnLabel.setMinWidth(vBox.getPrefWidth());
 		bthTextfield.setMinWidth(vBox.getPrefWidth());
@@ -125,18 +144,20 @@ public class UIBuilder extends Application {
 		btnClearAll.setMinWidth(vBox.getPrefWidth());
 		btnModifyElement.setMinWidth(vBox.getPrefWidth());
 		btnRender.setMinWidth(vBox.getPrefWidth());
+		btnSaveJSON.setMinWidth(vBox.getPrefWidth());
+		btnLoadJSON.setMinWidth(vBox.getPrefWidth());
 		
-		vBox.getChildren().addAll(btnLabel, bthTextfield, btnButton, btnModifyElement, btnClearAll, btnRender);
+		vBox.getChildren().addAll(btnLabel, bthTextfield, btnButton, btnModifyElement, btnClearAll, btnRender, btnSaveJSON, btnLoadJSON);
 		
 		tfVBox.getChildren().addAll(tfText, tfWidth, tfHeight);
 		
 		root.getChildren().addAll(txtComponents, btnLabel, bthTextfield, btnButton, 
 				txtAttributes, tfText,tfWidth, tfHeight, btnModifyElement,
-				btnRender, btnClearAll, txtText, txtWidth, txtHeight);
+				btnRender, btnClearAll, txtText, txtWidth, txtHeight, taJSON, btnSaveJSON, btnLoadJSON);
 
 		stage.setResizable(false);
 		
-		stage.setScene(new Scene(root, 1366, 768, Color.GHOSTWHITE));
+		stage.setScene(new Scene(root, 1536, 864, Color.GHOSTWHITE));
 		stage.setTitle("UI Builder");
 		stage.show();
 	}
