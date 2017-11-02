@@ -176,11 +176,24 @@ public class UIEventHandlers {
             if(selectedFile != null){
             	uiRenderer.readFromJSON(selectedFile);
     			String json = uiRenderer.getJson();
+    			
+    			for (int i = 0; i < uiElements.size(); i++) 
+    				root.getChildren().remove(uiElements.get(i));
+    			
+    			uiElements.clear();
+    			
     			uiBuilder.updatetaJSON(json);
     			
-    			loadUILabels(uiRenderer.getLabelList());
-    			loadUIButtons(uiRenderer.getButtonList());
-    			loadUITextFields(uiRenderer.getTextfieldList());
+    			if(uiRenderer.getLabelList() != null){
+    				loadUILabels(uiRenderer.getLabelList());
+    			}
+    			if(uiRenderer.getButtonList() != null){
+    				loadUIButtons(uiRenderer.getButtonList());
+    			}
+    			if(uiRenderer.getTextfieldList() != null){
+    				loadUITextFields(uiRenderer.getTextfieldList());
+    			}
+    			
             }
 			
 		}

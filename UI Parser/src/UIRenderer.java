@@ -41,7 +41,7 @@ public class UIRenderer {
 	
 	private Group root;
 	
-	UIRenderer(){
+	public UIRenderer(){
 		
 		labelList = new JSONArray();
 		buttonList = new JSONArray();
