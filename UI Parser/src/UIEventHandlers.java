@@ -1,5 +1,6 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -174,7 +175,7 @@ public class UIEventHandlers {
             File selectedFile = fileChooser.showOpenDialog(null);
 
             if(selectedFile != null){
-            	uiRenderer.readFromJSON(selectedFile);
+            	JSONArray elements = uiRenderer.readFromJSON(selectedFile);
     			String json = uiRenderer.getJson();
     			
     			for (int i = 0; i < uiElements.size(); i++) 
@@ -184,7 +185,9 @@ public class UIEventHandlers {
     			
     			uiBuilder.updatetaJSON(json);
     			
-    			if(uiRenderer.getLabelList() != null){
+    			loadUI(elements);
+    			
+    			/*if(uiRenderer.getLabelList() != null){
     				loadUILabels(uiRenderer.getLabelList());
     			}
     			if(uiRenderer.getButtonList() != null){
@@ -192,7 +195,7 @@ public class UIEventHandlers {
     			}
     			if(uiRenderer.getTextfieldList() != null){
     				loadUITextFields(uiRenderer.getTextfieldList());
-    			}
+    			}*/
     			
             }
 			
@@ -207,6 +210,11 @@ public class UIEventHandlers {
 			nY = t.getSceneY();
 			transX = (((Node) t.getSource())).getTranslateX();
 			transY = ((Node) (t.getSource())).getTranslateY();
+			
+			((Node)(t.getSource())).toFront();
+			int first = uiElements.indexOf((Node)(t.getSource()));
+			
+			Collections.swap(uiElements, first, uiElements.size() - 1);
 		}
 	};
 	
@@ -252,7 +260,77 @@ public class UIEventHandlers {
 		}
 	};
 	
-	public void loadUILabels(JSONArray labelJSONList){
+	public void loadUI(JSONArray elements){
+		if(elements.size() > 0){
+			for(int i = 0; i < elements.size(); i++){
+				JSONObject object = (JSONObject) elements.get(i);
+				if(object.containsKey("label")){
+					JSONObject labelJSON = (JSONObject) object.get("label");
+					String text = (String) labelJSON.get("text");
+					double xpos = (Double) labelJSON.get("x-pos");
+					double ypos = (Double) labelJSON.get("y-pos");
+					double width = (Double) labelJSON.get("width");
+					double height = (Double) labelJSON.get("height");
+					
+					Label label = new Label(text);
+					label.setPrefWidth(width);
+					label.setPrefHeight(height);
+					label.setTranslateX(xpos);
+					label.setTranslateY(ypos);
+					label.setCursor(Cursor.HAND);
+					label.setOnMousePressed(OnElementPressed);
+					label.setOnMouseDragged(OnElementDragged);
+					
+					uiElements.add(label);
+					root.getChildren().add(label);
+				}
+				
+				else if(object.containsKey("button")){
+					JSONObject labelJSON = (JSONObject) object.get("button");
+					String text = (String) labelJSON.get("text");
+					double xpos = (Double) labelJSON.get("x-pos");
+					double ypos = (Double) labelJSON.get("y-pos");
+					double width = (Double) labelJSON.get("width");
+					double height = (Double) labelJSON.get("height");
+					
+					Button button = new Button(text);
+					button.setPrefWidth(width);
+					button.setPrefHeight(height);
+					button.setTranslateX(xpos);
+					button.setTranslateY(ypos);
+					button.setCursor(Cursor.HAND);
+					button.setOnMousePressed(OnElementPressed);
+					button.setOnMouseDragged(OnElementDragged);
+					
+					uiElements.add(button);
+					root.getChildren().add(button);
+				}
+				
+				else if(object.containsKey("textfield")){
+					JSONObject labelJSON = (JSONObject) object.get("textfield");
+					String text = (String) labelJSON.get("text");
+					double xpos = (Double) labelJSON.get("x-pos");
+					double ypos = (Double) labelJSON.get("y-pos");
+					double width = (Double) labelJSON.get("width");
+					double height = (Double) labelJSON.get("height");
+					
+					TextField textfield = new TextField(text);
+					textfield.setPrefWidth(width);
+					textfield.setPrefHeight(height);
+					textfield.setTranslateX(xpos);
+					textfield.setTranslateY(ypos);
+					textfield.setCursor(Cursor.HAND);
+					textfield.setOnMousePressed(OnElementPressed);
+					textfield.setOnMouseDragged(OnElementDragged);
+					
+					uiElements.add(textfield);
+					root.getChildren().add(textfield);
+				}
+			}
+		}
+	}
+	
+	/*public void loadUILabels(JSONArray labelJSONList){
 
 		
 		if(labelJSONList.size() > 0){
@@ -331,5 +409,5 @@ public class UIEventHandlers {
 				root.getChildren().add(textfield);
 			}
 		}
-	}
+	}*/
 }

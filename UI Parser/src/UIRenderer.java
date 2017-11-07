@@ -26,7 +26,7 @@ import javafx.scene.control.TextField;
 public class UIRenderer {
 	
 	private String json;
-	private ArrayList<Node> uiElements;
+	//private ArrayList<Node> uiElements;
 	
 	private JSONArray labelList;
 	private JSONArray buttonList;
@@ -69,7 +69,7 @@ public class UIRenderer {
 		
 	}
 	
-	public void readFromJSON(File file){
+	public JSONArray readFromJSON(File file){
 		
 		JSONParser parser = new JSONParser();
 		try {
@@ -83,9 +83,11 @@ public class UIRenderer {
     		JsonElement je = jp.parse(jsonObject.toString());
     		json = gson.toJson(je);
             
-            buttonList = (JSONArray) jsonObject.get("buttons");
+            /*buttonList = (JSONArray) jsonObject.get("buttons");
             textfieldList = (JSONArray) jsonObject.get("textfields");
-            labelList = (JSONArray) jsonObject.get("labels");
+            labelList = (JSONArray) jsonObject.get("labels");*/
+    		elementsList = new JSONArray();
+    		elementsList = (JSONArray) jsonObject.get("elements");
 
             System.out.println("READ FROM JSON SUCCESSFULLY!");
         } catch (FileNotFoundException e) {
@@ -96,30 +98,64 @@ public class UIRenderer {
             e.printStackTrace();
         }
 
+		return elementsList;
 	}
 	
 	public String renderUI(ArrayList<Node> uiElements){
 
-		convertToJSON(uiElements);
+		elementsList = new JSONArray();
+		elements = new JSONObject();
 		
-		/*convertToJSONLabels(uilabelList);
-		convertToJSONButtons(uibuttonList);
-		convertToJSONTextFields(uitextfieldList);*/
-		
-		if(labelList.size() > 0){
-			elements.put("labels", labelList);
+		for(int i = 0; i < uiElements.size(); i++){
+			String elementType = uiElements.get(i).getClass().getSimpleName();
+			
+			switch(elementType){
+				case "Label":
+					Label label = (Label) uiElements.get(i);
+					
+					JSONObject labeljson = new JSONObject();
+					labeljson.put("text", label.getText());
+					labeljson.put("x-pos", label.getTranslateX());
+					labeljson.put("y-pos", label.getTranslateY());
+					labeljson.put("width", label.getWidth());
+					labeljson.put("height", label.getHeight());
+					JSONObject elabel = new JSONObject();
+					elabel.put("label", labeljson);
+					elementsList.add(elabel);
+					break;
+				case "Button":
+					Button button = (Button) uiElements.get(i);
+					
+					JSONObject buttonjson = new JSONObject();
+					buttonjson.put("text", button.getText());
+					buttonjson.put("x-pos", button.getTranslateX());
+					buttonjson.put("y-pos", button.getTranslateY());
+					buttonjson.put("width", button.getWidth());
+					buttonjson.put("height", button.getHeight());
+					
+					JSONObject ebutton = new JSONObject();
+					ebutton.put("button", buttonjson);
+					elementsList.add(ebutton);
+					break;
+				case "TextField":
+					TextField textfield = (TextField) uiElements.get(i);
+					
+					JSONObject textfieldjson = new JSONObject();
+					textfieldjson.put("text", textfield.getText());
+					textfieldjson.put("x-pos", textfield.getTranslateX());
+					textfieldjson.put("y-pos", textfield.getTranslateY());
+					textfieldjson.put("width", textfield.getWidth());
+					textfieldjson.put("height", textfield.getHeight());
+
+					JSONObject etextfield = new JSONObject();
+					etextfield.put("textfield", textfieldjson);
+					elementsList.add(etextfield);
+					break;
+			}
+			
 		}
 		
-		if(buttonList.size() > 0){
-			elements.put("buttons", buttonList);
-		}
-		
-		if(textfieldList.size() > 0){
-			elements.put("textfields", textfieldList);
-		}
-		
-		
-		//elements.put("elements", elementsList);
+		elements.put("elements", elementsList);
 		
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		JsonParser jp = new JsonParser();
