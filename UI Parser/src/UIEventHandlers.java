@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 
 
@@ -50,6 +51,7 @@ public class UIEventHandlers {
 			TextField textField = new TextField("New Textfield");
 			textField.setTranslateX(600);
 			textField.setTranslateY(350);
+			textField.setFont((Font.font ("Segoe UI", 11)));
 			textField.setCursor(Cursor.HAND);
 			textField.setOnMousePressed(OnElementPressed);
 			textField.setOnMouseDragged(OnElementDragged);
@@ -65,6 +67,7 @@ public class UIEventHandlers {
 			Button button = new Button("New Button");
 			button.setTranslateX(600);
 			button.setTranslateY(350);
+			button.setFont((Font.font ("Segoe UI", 11)));
 			button.setCursor(Cursor.HAND);
 			button.setOnMousePressed(OnElementPressed);
 			button.setOnMouseDragged(OnElementDragged);
@@ -82,6 +85,7 @@ public class UIEventHandlers {
 			Label label = new Label("New Label");
 			label.setTranslateX(600);
 			label.setTranslateY(350);
+			label.setFont((Font.font ("Segoe UI", 11)));
 			label.setCursor(Cursor.HAND);
 			label.setOnMousePressed(OnElementPressed);
 			label.setOnMouseDragged(OnElementDragged);
@@ -277,6 +281,7 @@ public class UIEventHandlers {
 					label.setPrefHeight(height);
 					label.setTranslateX(xpos);
 					label.setTranslateY(ypos);
+					label.setFont((Font.font ("Segoe UI", 11)));
 					label.setCursor(Cursor.HAND);
 					label.setOnMousePressed(OnElementPressed);
 					label.setOnMouseDragged(OnElementDragged);
@@ -298,6 +303,7 @@ public class UIEventHandlers {
 					button.setPrefHeight(height);
 					button.setTranslateX(xpos);
 					button.setTranslateY(ypos);
+					button.setFont((Font.font ("Segoe UI", 11)));
 					button.setCursor(Cursor.HAND);
 					button.setOnMousePressed(OnElementPressed);
 					button.setOnMouseDragged(OnElementDragged);
@@ -319,6 +325,7 @@ public class UIEventHandlers {
 					textfield.setPrefHeight(height);
 					textfield.setTranslateX(xpos);
 					textfield.setTranslateY(ypos);
+					textfield.setFont((Font.font ("Segoe UI", 11)));
 					textfield.setCursor(Cursor.HAND);
 					textfield.setOnMousePressed(OnElementPressed);
 					textfield.setOnMouseDragged(OnElementDragged);
