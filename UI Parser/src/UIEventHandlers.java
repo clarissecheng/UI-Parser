@@ -218,7 +218,11 @@ public class UIEventHandlers {
 			((Node)(t.getSource())).toFront();
 			int first = uiElements.indexOf((Node)(t.getSource()));
 			
-			Collections.swap(uiElements, first, uiElements.size() - 1);
+			Node temp = ((Node)(t.getSource()));
+			
+			//Collections.swap(uiElements, first, uiElements.size() - 1);
+			uiElements.remove(first);
+			uiElements.add(temp);
 		}
 	};
 	

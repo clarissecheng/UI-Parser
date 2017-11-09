@@ -15,6 +15,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -45,6 +47,8 @@ public class UIBuilder extends Application {
 		uiElements = new ArrayList<Node>();
 		root = new Group();
 		uiController = new UIEventHandlers(this);
+		
+	
 		
 		Text txtComponents = new Text ("- Components -");
 		txtComponents.setFont(Font.font(18));
